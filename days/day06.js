@@ -3,16 +3,12 @@ import _ from "lodash";
 
 export async function star11() {
   const input = await getInput(6).then((response) => {
-    console.log("response");
-    console.log(response);
-
-    //let inputArray = [3, 4, 3, 1, 2];
+    //let inputArray = [3, 4, 3, 1, 2];  //testArray
 
     let inputArray = response.inputArray[0].split(",").map((m) => parseInt(m));
     console.log(inputArray);
 
     for (let a = 0; a < 256; a++) {
-      console.log(`day: ${a}`);
       const newFish = [];
       for (let b = 0; b < inputArray.length; b++) {
         if (inputArray[b] > 0) {
@@ -23,11 +19,8 @@ export async function star11() {
         }
       }
       inputArray = inputArray.concat(newFish);
-      console.log(inputArray.length);
     }
-
-    const answer = _.sum(inputArray);
-
+    const answer = inputArray.length;
     console.log(`star11: ${answer}`);
   });
 }
