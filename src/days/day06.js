@@ -26,29 +26,18 @@ export async function star11() {
 }
 
 export async function star12() {
-  const input = await getInput(6).then((response) => {
-    let inputArray = response.inputArray[0].split(",").map((m) => parseInt(m));
-
-    const groupBy = _.groupBy(inputArray);
-    const vals = Object.values(groupBy).map((m) => m.length);
-
-    let f = [0].concat(vals, [0, 0, 0]);
-
+  await getInput(6).then((response) => {
+    let i = response.inputArray[0].split(",").map((m) => parseInt(m));
+    const g = _.groupBy(i);
+    const f = [0].concat(
+      Object.values(g).map((m) => m.length),
+      [0, 0, 0]
+    );
     for (let a = 0; a < 256; a++) {
-      const n = [];
-      n.push(f[1]);
-      n.push(f[2]);
-      n.push(f[3]);
-      n.push(f[4]);
-      n.push(f[5]);
-      n.push(f[6]);
-      n.push(f[7] + f[0]);
-      n.push(f[8]);
-      n.push(f[0]);
-
-      f = n;
+      f.push(f[0]);
+      f.shift();
+      f[6] += f[8];
     }
-    const sumOfFish = _.sum(f);
-    console.log(`star12: ${sumOfFish}`);
+    console.log(`star12: ${_.sum(f)}`);
   });
 }

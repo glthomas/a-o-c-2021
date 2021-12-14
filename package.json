@@ -2,7 +2,7 @@
   "name": "avent",
   "version": "1.0.0",
   "description": "code",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "jest"
@@ -12,6 +12,8 @@
   "dependencies": {
     "axios": "^0.24.0",
     "dotenv": "^10.0.0",
-    "lodash": "^4.17.21"
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.21",
+    "mathjs": "^10.0.0"
   }
 }
