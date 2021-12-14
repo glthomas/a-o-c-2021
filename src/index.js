@@ -6,8 +6,9 @@ import { star15, star16 } from "./days/day08.js";
 import { star17, star18 } from "./days/day09.js";
 import { star19, star20 } from "./days/day10.js";
 import { star21, star22 } from "./days/day11.js";
-import { star23, star24 } from "./days/day12.js";
+import { star23, star23Clean, star24 } from "./days/day12.js";
 import { star25, s26 } from "./days/day13.js";
+import { star27, star28 } from "./days/day14.js";
 
 import { star1 } from "./days/day01.js";
 
@@ -51,8 +52,14 @@ import { star1 } from "./days/day01.js";
 
 //star23();
 
+//star23Clean();
+
 //star24();
 
 //star25();
 
-star1();
+//star1();
+
+//star27();
+
+star28();
