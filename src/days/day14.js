@@ -63,52 +63,33 @@ export async function star28() {
     let i = response.inputArray;
 
     let poly = i[0];
-
     let rules = i.slice(2, i.length).map((m) => m.split(" -> "));
+    const rulesDict = new Map(rules.map(([k, v]) => [k, [k[0] + v, v + k[1]]]));
 
-    let rulesDict = {};
-    rules.forEach((rule) => {
-      rulesDict[rule[0]] = [
-        rule[0].charAt(0) + rule[1],
-        rule[1] + rule[0].charAt(1),
-      ];
-    });
+    let keys = Array.from(rulesDict.keys());
+    let vals = Array.from(rulesDict.values());
 
-    let keys = Object.keys(rulesDict);
-    let vals = _.flatMap(Object.values(rulesDict));
-    let distinctKeys = Array.from(new Set(keys.concat(vals)));
+    let pairs = poly.match(/.{2}/g).concat(poly.substring(1).match(/.{2}/g));
 
-    let pairTots = {};
-    distinctKeys.forEach((dk) => {
-      pairTots[dk] = 0;
-    });
+    let totals = new Map(
+      keys.map((key) => [key, pairs.filter((f) => f == key).length])
+    );
 
-    let genPairs = (str) => {
-      let pairs = [];
-      for (let a = 0; a < str.length - 1; a++) {
-        pairs.push(str.substring(a, a + 2));
-      }
-      return pairs;
-    };
-
-    let pairs = genPairs(poly);
-    pairs.forEach((p) => {
-      pairTots[p] += 1;
-    });
+    console.log(totals);
 
     for (let a = 0; a < 40; a++) {
-      let newDict = { ...pairTots };
+      let newDict = { ...totals };
       let newKeys = Object.keys(newDict);
 
       newKeys.forEach((nk) => {
-        newDict[rulesDict[nk][0]] += pairTots[nk];
-        newDict[rulesDict[nk][1]] += pairTots[nk];
-        if (pairTots[nk] > 0) newDict[nk] -= pairTots[nk];
+        newDict[rulesDict.get(nk)[0]] += totals[nk];
+        newDict[rulesDict.get(nk)[1]] += totals[nk];
+        if (totals[nk] > 0) newDict[nk] -= totals[nk];
       });
-      pairTots = newDict;
+      totals = newDict;
     }
 
-    let charArray = Object.keys(pairTots).map((m) => m.split(""));
+    let charArray = Object.keys(totals).map((m) => m.split(""));
     let distinctChars = Array.from(new Set(_.flatMap(charArray)));
 
     let charDict = {};
@@ -117,14 +98,14 @@ export async function star28() {
     });
 
     for (let a = 0; a < charArray.length; a++) {
-      charDict[Object.keys(pairTots)[a][0]] += Object.values(pairTots)[a];
-      charDict[Object.keys(pairTots)[a][1]] += Object.values(pairTots)[a];
+      charDict[Object.keys(totals)[a][0]] += Object.values(totals)[a];
+      charDict[Object.keys(totals)[a][1]] += Object.values(totals)[a];
     }
 
-    let totals = distinctChars.map((m) => {
-      return Math.floor((charDict[m] + 1) / 2);
-    });
+    // let totals = distinctChars.map((m) => {
+    //   return Math.floor((charDict[m] + 1) / 2);
+    // });
 
-    console.log(`star28: ${Math.max(...totals) - Math.min(...totals)}`);
+    //console.log(`star28: ${Math.max(...totals) - Math.min(...totals)}`);
   });
 }

@@ -1,7 +1,8 @@
 import { getInput } from "../getInput.js";
 import _ from "lodash";
+import { median, mean } from "mathjs";
 
-export async function star13() {
+export async function star13a() {
   const input = await getInput(7).then((response) => {
     //console.log(response.inputArray);
     //console.log(response);
@@ -38,7 +39,7 @@ export async function star13() {
   });
 }
 
-export async function star14() {
+export async function star14a() {
   const input = await getInput(7).then((response) => {
     let i = response.inputArray[0].split(",").map((m) => parseInt(m));
     let b = [];
@@ -47,5 +48,23 @@ export async function star14() {
       b.push(_.sum(diff));
     }
     console.log(`star14: ${_.min(b)}`);
+  });
+}
+
+export async function star13() {
+  const input = await getInput(7).then((response) => {
+    let i = response.inputArray[0].split(",").map((m) => parseInt(m));
+    const minFuel = _.sum(i.map((m) => Math.abs(m - median(i))));
+    console.log(`star13: ${minFuel}`);
+  });
+}
+
+export async function star14() {
+  const input = await getInput(7).then((response) => {
+    let i = response.inputArray[0].split(",").map((m) => parseInt(m));
+    const minFuel = Math.floor(
+      _.sum(i.map((m) => (Math.abs(m - mean(i)) * Math.abs(m - mean(i))) / 2))
+    );
+    console.log(`star14: ${minFuel}`);
   });
 }

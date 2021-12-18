@@ -9,6 +9,10 @@ import { star21, star22 } from "./days/day11.js";
 import { star23, star23Clean, star24 } from "./days/day12.js";
 import { star25, s26 } from "./days/day13.js";
 import { star27, star28 } from "./days/day14.js";
+import { star29, star30 } from "./days/day15.js";
+import { star31, star32 } from "./days/day16.js";
+import { star33, star34 } from "./days/day17.js";
+import { star35, star36 } from "./days/day18.js";
 
 import { star1 } from "./days/day01.js";
 
@@ -62,4 +66,20 @@ import { star1 } from "./days/day01.js";
 
 //star27();
 
-star28();
+//star28();
+
+//star29();
+
+//star30();
+
+//star31();
+
+//star32();
+
+//star33();
+
+//star34();
+
+//star35();
+
+star36();
