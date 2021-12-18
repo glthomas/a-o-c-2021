@@ -44,7 +44,7 @@ export async function star27() {
       return str;
     };
 
-    for (let a = 0; a < 40; a++) {
+    for (let a = 0; a < 10; a++) {
       let pairs = genPairs(poly);
       let insertions = genInsertions(pairs);
       let strChain = chain(insertions);
