@@ -3,7 +3,7 @@ import _ from "lodash";
 import { create, all } from "mathjs";
 
 export async function star35() {
-  const input = await getInput(18).then((response) => {
+  const input = await getInput(19).then((response) => {
     let i = response.inputArray;
 
     let findLeftMostPair = (str) => {

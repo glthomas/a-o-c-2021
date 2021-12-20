@@ -13,6 +13,7 @@ import { star29, star30 } from "./days/day15.js";
 import { star31, star32 } from "./days/day16.js";
 import { star33, star34 } from "./days/day17.js";
 import { star35, star36 } from "./days/day18.js";
+import { star37, star38 } from "./days/day19.js";
 
 import { star1 } from "./days/day01.js";
 
@@ -82,4 +83,8 @@ import { star1 } from "./days/day01.js";
 
 //star35();
 
-star36();
+//star36();
+
+star37();
+
+//star38();
