@@ -1,4 +1,5 @@
 import { getInput } from "./getInput.js";
+import { star1 } from "./days/day01.js";
 import { star9, star10 } from "./days/day05.js";
 import { star11, star12 } from "./days/day06.js";
 import { star13, star14 } from "./days/day07.js";
@@ -14,8 +15,9 @@ import { star31, star32 } from "./days/day16.js";
 import { star33, star34 } from "./days/day17.js";
 import { star35, star36 } from "./days/day18.js";
 import { star37, star38 } from "./days/day19.js";
-
-import { star1 } from "./days/day01.js";
+import { star39 } from "./days/day20.js";
+import { star41, star42 } from "./days/day21.js";
+import { star43, star44 } from "./days/day22.js";
 
 //star3();
 
@@ -85,6 +87,18 @@ import { star1 } from "./days/day01.js";
 
 //star36();
 
-star37();
+//star37();
 
 //star38();
+
+//star39();
+
+//star40();
+
+//star41();
+
+//star42();
+
+//star43();
+
+star44();

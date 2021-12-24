@@ -1,6 +1,6 @@
 import { getInput } from "../getInput.js";
 import _ from "lodash";
-import { create, all } from "mathjs";
+import { create, all, MatrixDependencies } from "mathjs";
 const config = {};
 const math = create(all, config);
 
@@ -167,6 +167,7 @@ export async function star37() {
     ]);
 
     let possibleRotations = [
+      [i],
       [x],
       [y],
       [x, x],
@@ -190,7 +191,6 @@ export async function star37() {
       [x, x, x, y, x],
       [x, y, x, x, x],
       [x, y, y, y, x],
-      [i],
     ];
 
     let scanners = [];
@@ -269,7 +269,7 @@ export async function star37() {
     };
 
     let checkTransform = (heurMatches) => {
-      heurMatches = heurMatches.filter((h) => h.h != 0);
+      //heurMatches = heurMatches.filter((h) => h.h != 0);
 
       let setOfAllHeuristicMatches = [];
 
@@ -303,80 +303,87 @@ export async function star37() {
     let rotationAndTransformationKnown = {
       0: { rotIndex: undefined, transform: undefined, relativeTo: 0 },
     };
+    let leadScanner = scanners[0]; //.sort((a, b) => a[0] - b[0]);
+    for (let v = 0; v < 8; v++) {
+      //leadScanner = scanners[v]; //.sort((a, b) => a[0] - b[0]);
+      console.log({ v });
+      for (let w = 0; w < scanners.length; w++) {
+        if (!rotationAndTransformationKnown[w]) {
+          if (v != w) {
+            //console.log({ v, w });
+            let nextScanner = scanners[w];
+            let leadScannerPairs = generateScannerPair(leadScanner, v);
 
-    for (let v = 0; v < scanners.length; v++) {
-      let leadScanner = scanners[v].sort((a, b) => a[0] - b[0]);
-      if (!rotationAndTransformationKnown[v]) {
-        for (let w = 1; w < scanners.length; w++) {
-          if (!rotationAndTransformationKnown[w]) {
-            if (v != w) {
-              console.log({ v, w });
-              let nextScanner = scanners[w];
-              let leadScannerPairs = generateScannerPair(leadScanner);
+            for (let a = 0; a < possibleRotations.length; a++) {
+              let rotated = rotateScanner(
+                nextScanner,
+                possibleRotations[a]
+              ).sort((a, b) => a[0] - b[0]);
 
-              for (let a = 0; a < possibleRotations.length; a++) {
-                let rotated = rotateScanner(
-                  nextScanner,
-                  possibleRotations[a]
-                ).sort((a, b) => a[0] - b[0]);
-                let rotatedPairs = generateScannerPair(rotated);
+              let rotatedPairs = generateScannerPair(rotated, w);
 
-                let heuristicMatches = findMatchingHeuristics(
-                  leadScannerPairs,
-                  rotatedPairs
-                );
+              let heuristicMatches = findMatchingHeuristics(
+                leadScannerPairs,
+                rotatedPairs
+              );
 
-                let transforms = checkTransform(heuristicMatches);
-                if (transforms.length >= 66) {
-                  // record the rotation and the transformation data relative to the leadScanner index
+              //console.log(heuristicMatches.length);
 
-                  let xOffset =
-                    leadScanner[transforms[0][0].b1][0] -
-                    rotated[transforms[0][1].b1][0];
-                  let yOffset =
-                    leadScanner[transforms[0][0].b1][1] -
-                    rotated[transforms[0][1].b1][1];
-                  let zOffset =
-                    leadScanner[transforms[0][0].b1][2] -
-                    rotated[transforms[0][1].b1][2];
+              let transforms = checkTransform(heuristicMatches);
 
-                  console.log([xOffset, yOffset, zOffset]);
+              if (transforms.length > 0) {
+                //console.log(transforms.length);
+              }
+              if (transforms.length >= 12) {
+                // record the rotation and the transformation data relative to the leadScanner index
 
-                  let rotInfo = {
-                    scanner: w,
-                    rotIndex: a,
-                    transform: [xOffset, yOffset, zOffset],
-                    relativeTo: v,
-                  };
-                  rotationAndTransformationKnown[w] = {
-                    rotIndex: a,
-                    transform: [xOffset, yOffset, zOffset],
-                    relativeTo: w,
-                  };
+                let xOffset =
+                  leadScanner[transforms[0][0].b1][0] -
+                  rotated[transforms[0][1].b1][0];
+                let yOffset =
+                  leadScanner[transforms[0][0].b1][1] -
+                  rotated[transforms[0][1].b1][1];
+                let zOffset =
+                  leadScanner[transforms[0][0].b1][2] -
+                  rotated[transforms[0][1].b1][2];
 
-                  console.log(rotInfo);
-                  let rotatedAndTranslated = rotated.map((m) => [
-                    m[0] + xOffset,
-                    m[1] + yOffset,
-                    m[2] + zOffset,
-                  ]);
+                //console.log([xOffset, yOffset, zOffset]);
 
-                  a = 1000;
-                  //   rotatedAndTranslated.forEach((rt) => {
-                  //     if (
-                  //       leadScanner.some(
-                  //         (f) => f[0] == rt[0] && f[1] == rt[1] && f[2] == rt[2]
-                  //       )
-                  //     ) {
-                  //     } else {
-                  //       leadScanner.push(rt);
-                  //     }
-                  //   });
-                }
+                let rotInfo = {
+                  scanner: w,
+                  rotIndex: a,
+                  transform: [xOffset, yOffset, zOffset],
+                  relativeTo: v,
+                };
+                rotationAndTransformationKnown[w] = {
+                  rotIndex: a,
+                  transform: [xOffset, yOffset, zOffset],
+                  relativeTo: v,
+                };
+
+                //console.log(rotInfo);
+                let rotatedAndTranslated = rotated.map((m) => [
+                  m[0] + xOffset,
+                  m[1] + yOffset,
+                  m[2] + zOffset,
+                ]);
+
+                a = 1000;
+                rotatedAndTranslated.forEach((rt) => {
+                  if (
+                    leadScanner.some(
+                      (f) => f[0] == rt[0] && f[1] == rt[1] && f[2] == rt[2]
+                    )
+                  ) {
+                  } else {
+                    leadScanner.push(rt);
+                  }
+                });
               }
             }
           }
         }
+        console.log(`length: ${leadScanner.length}`);
       }
     }
 
@@ -387,7 +394,28 @@ export async function star37() {
     // console.log(_.countBy(scanner1));
 
     console.log(rotationAndTransformationKnown);
-    console.log(`star37: ${0}`);
+
+    rotationAndTransformationKnown[0].transform = [0, 0, 0];
+    let max = 0;
+    for (let u = 0; u < scanners.length - 1; u++) {
+      for (let r = u + 1; r < scanners.length; r++) {
+        let tempX =
+          rotationAndTransformationKnown[u].transform[0] -
+          rotationAndTransformationKnown[r].transform[0];
+        let tempY =
+          rotationAndTransformationKnown[u].transform[1] -
+          rotationAndTransformationKnown[r].transform[1];
+        let tempZ =
+          rotationAndTransformationKnown[u].transform[2] -
+          rotationAndTransformationKnown[r].transform[2];
+        let dist = Math.abs(tempX) + Math.abs(tempY) + Math.abs(tempZ);
+        if (dist > max) {
+          max = dist;
+          console.log({ max });
+        }
+      }
+    }
+    console.log(`star37: ${leadScanner.length}`);
   });
 }
 
